@@ -3,6 +3,9 @@ import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import PropTypes from "prop-types";
 import "./LoginForm.css";
 
+const DEMO_EMAIL = "seed@gigtrack.com";
+const DEMO_PASSWORD = "demo1234";
+
 export default function LoginForm({ onSuccess }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -10,6 +13,10 @@ export default function LoginForm({ onSuccess }) {
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function fillDemo() {
+    setFormData({ email: DEMO_EMAIL, password: DEMO_PASSWORD });
   }
 
   async function handleSubmit(e) {
@@ -41,7 +48,27 @@ export default function LoginForm({ onSuccess }) {
       <Card className="login-card">
         <Card.Body>
           <h2 className="login-title">Welcome Back</h2>
+
+          <div className="login-demo-box">
+            <p className="login-demo-text">
+              🎓 Want to explore without registering?
+            </p>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="w-100"
+              onClick={fillDemo}
+            >
+              Use Demo Account
+            </Button>
+            <p className="login-demo-credentials">
+              Email: <strong>{DEMO_EMAIL}</strong> · Password:{" "}
+              <strong>{DEMO_PASSWORD}</strong>
+            </p>
+          </div>
+
           {error && <Alert variant="danger">{error}</Alert>}
+
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>

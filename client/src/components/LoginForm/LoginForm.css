@@ -20,3 +20,25 @@
   text-align: center;
   color: #1a1a2e;
 }
+
+.login-demo-box {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  border: 1px dashed #ced4da;
+}
+
+.login-demo-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.login-demo-credentials {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
