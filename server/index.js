@@ -3,6 +3,9 @@ import session from "express-session";
 import passport from "passport";
 import dotenv from "dotenv";
 import { connectDB } from "./db/connection.js";
+import userRoutes from "./routes/users.js";
+import gigRoutes from "./routes/gigs.js";
+import goalRoutes from "./routes/goals.js";
 
 dotenv.config();
 
@@ -23,12 +26,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Health check route
+// Routes
+app.use("/api/auth", userRoutes);
+app.use("/api/gigs", gigRoutes);
+app.use("/api/goals", goalRoutes);
+
+// Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "GigTrack API is running" });
 });
 
-// Start server only after DB connects
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
