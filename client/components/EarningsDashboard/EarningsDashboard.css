@@ -1,0 +1,82 @@
+.dashboard-container {
+  padding: 2rem 1rem;
+}
+
+.dashboard-heading {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1a1a2e;
+}
+
+.dashboard-loading {
+  text-align: center;
+  margin-top: 3rem;
+  color: #888;
+}
+
+.dashboard-total-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 12px;
+  border: none;
+}
+
+.dashboard-total-label {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-total-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dashboard-card {
+  border-radius: 12px;
+  border: 1px solid #e8e8f0;
+  height: 100%;
+}
+
+.dashboard-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.dashboard-bar-label {
+  width: 80px;
+  font-size: 0.85rem;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.dashboard-bar-track {
+  flex: 1;
+  background: #f0f0f5;
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.dashboard-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.dashboard-bar-fill--type {
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.dashboard-bar-value {
+  width: 70px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+  flex-shrink: 0;
+}

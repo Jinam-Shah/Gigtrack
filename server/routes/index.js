@@ -4,6 +4,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import { connectDB } from "./db/connection.js";
 import userRoutes from "./routes/users.js";
+import gigRoutes from "./routes/gigs.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/api/auth", userRoutes);
+app.use("/api/gigs", gigRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
