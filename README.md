@@ -1,4 +1,4 @@
-# 💼 GigTrack — Hustle Tracker & Earnings Dashboard
+# 💼 GigTrack - Hustle Tracker & Earnings Dashboard
 
 > A full-stack personal side hustle tracker for students in the gig economy.
 > Log every gig, rate your clients, track earnings on a visual dashboard,
