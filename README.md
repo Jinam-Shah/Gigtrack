@@ -6,27 +6,11 @@
 
 ---
 
-## 🖼️ Screenshots
-
-### Home Page
-![Home Page](screenshots/home.png)
-
-### My Gigs
-![My Gigs](screenshots/gigs.png)
-
-### Earnings Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### Goals & Payouts
-![Goals](screenshots/goals.png)
-
----
-
 ## 👥 Authors
 
-| Name | GitHub |
-|---|---|
-| Jinam Shah | [@Jinam-Shah](https://github.com/Jinam-Shah) |
+| Name           | GitHub                                                 |
+| -------------- | ------------------------------------------------------ |
+| Jinam Shah     | [@Jinam-Shah](https://github.com/Jinam-Shah)           |
 | Sanket Kothari | [@Reachout-git-sk](https://github.com/Reachout-git-sk) |
 
 ---
@@ -36,6 +20,26 @@
 - **Class:** [Web Development Online — Spring 2026](https://johnguerra.co/classes/webDevelopment_online_spring_2026/)
 - **GitHub Repo:** [https://github.com/Jinam-Shah/Gigtrack](https://github.com/Jinam-Shah/Gigtrack)
 - **Live Demo:** [https://gigtrack.onrender.com](https://gigtrack.onrender.com)
+
+---
+
+## 🖼️ Screenshots
+
+### Login Page
+
+![Home Page](screenshots/login.png)
+
+### My Gigs
+
+![My Gigs](screenshots/Mygigs.png)
+
+### Earnings Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Goals & Payouts
+
+![Goals](screenshots/goals.png)
 
 ---
 
@@ -64,16 +68,19 @@ earnings dashboard for the gig economy.
 ## 👤 User Personas
 
 ### 🎓 The Multi-Hustle Student — Caleb
+
 Caleb juggles tutoring, library shifts, and Fiverr work. He wants one place to
 log all his income streams and see a real monthly total without using complex
 invoicing software. GigTrack gives him a single dashboard for all his work.
 
 ### 🚗 The Gig Economy Regular — Chet
+
 Chet does DoorDash and retail shifts regularly. He wants to compare his hourly
 rate across gig types and see which month was most profitable. GigTrack's
 earnings dashboard and gig-type breakdown give him exactly that.
 
 ### 💰 The Goal-Driven Saver — Scarlet
+
 Scarlet is saving for a specific purchase. She sets a monthly income target,
 logs every payout, and wants a clear on-track or at-risk indicator rather than
 raw numbers. GigTrack's color-coded goal health status gives her instant clarity.
@@ -122,20 +129,17 @@ raw numbers. GigTrack's color-coded goal health status gives her instant clarity
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19 + Vite + React Bootstrap 5 |
-| Routing | React Router v7 |
-| Backend | Node.js + Express (ES Modules) |
-| Database | MongoDB (native Node.js driver — no Mongoose) |
-| Authentication | Passport.js (LocalStrategy) + bcrypt |
-| Sessions | express-session + connect-mongo |
-| Build Tool | Vite |
-| Linting | ESLint |
-| Formatting | Prettier |
-
-> ⚠️ This project intentionally does **not** use Axios, Mongoose, or any CORS library
-> as per course requirements. All HTTP requests use the native `fetch()` API.
+| Layer          | Technology                                    |
+| -------------- | --------------------------------------------- |
+| Frontend       | React 19 + Vite + React Bootstrap 5           |
+| Routing        | React Router v7                               |
+| Backend        | Node.js + Express (ES Modules)                |
+| Database       | MongoDB (native Node.js driver — no Mongoose) |
+| Authentication | Passport.js (LocalStrategy) + bcrypt          |
+| Sessions       | express-session + connect-mongo               |
+| Build Tool     | Vite                                          |
+| Linting        | ESLint                                        |
+| Formatting     | Prettier                                      |
 
 ---
 
@@ -199,6 +203,7 @@ Gigtrack/
 ## 🗄️ Database Schema
 
 ### `users` collection (Jinam)
+
 ```json
 {
   "_id": "ObjectId",
@@ -210,6 +215,7 @@ Gigtrack/
 ```
 
 ### `gigs` collection (Jinam)
+
 ```json
 {
   "_id": "ObjectId",
@@ -230,6 +236,7 @@ Gigtrack/
 ```
 
 ### `goals` collection (Sanket)
+
 ```json
 {
   "_id": "ObjectId",
@@ -254,23 +261,27 @@ Gigtrack/
 ## 🚀 Instructions to Build Locally
 
 ### Prerequisites
+
 - Node.js v18 or higher
 - npm v9 or higher
 - A MongoDB Atlas account (free tier is sufficient)
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/Jinam-Shah/Gigtrack.git
 cd Gigtrack
 ```
 
 ### 2. Configure the Server
+
 ```bash
 cd server
 npm install
 ```
 
 Create a `.env` file inside the `server/` folder:
+
 ```
 MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/gigtrack?retryWrites=true&w=majority
 SESSION_SECRET=any_long_random_string_here
@@ -280,12 +291,14 @@ PORT=5000
 > ⚠️ Never commit your `.env` file. It is listed in `.gitignore`.
 
 ### 3. Configure the Client
+
 ```bash
 cd ../client
 npm install
 ```
 
 ### 4. Seed the Database
+
 ```bash
 cd ../server
 node seed/seedGigs.js
@@ -293,20 +306,22 @@ node seed/seedGoals.js
 ```
 
 This creates:
+
 - **1000 synthetic gig records** spread across 2024
 - **Synthetic goal records** for each month
 - A **demo account** you can use to log in immediately:
 
-| Field | Value |
-|---|---|
-| Email | `seed@gigtrack.com` |
-| Password | `demo1234` |
+| Field    | Value               |
+| -------- | ------------------- |
+| Email    | `seed@gigtrack.com` |
+| Password | `demo1234`          |
 
 ### 5. Run the Application
 
 Open **two terminals simultaneously**:
 
 **Terminal 1 — Start the backend:**
+
 ```bash
 cd server
 node index.js
@@ -316,6 +331,7 @@ node index.js
 ```
 
 **Terminal 2 — Start the frontend:**
+
 ```bash
 cd client
 npm run dev
@@ -325,6 +341,7 @@ npm run dev
 ```
 
 ### 6. Open in Browser
+
 Navigate to **[http://localhost:5173](http://localhost:5173)**
 
 ---
@@ -346,13 +363,12 @@ Navigate to **[http://localhost:5173](http://localhost:5173)**
 
 Both modules are **fully functional independently**:
 
-| Feature | Jinam Shah | Sanket Kothari |
-|---|---|---|
-| Collections | `users`, `gigs` | `goals` |
-| Auth | Register, Login, Logout via Passport.js | — |
-| CRUD | Full CRUD on gigs | Full CRUD on goals + payouts |
-| Components | LoginForm, RegisterForm, GigList, GigForm, GigCard, EarningsDashboard | GoalList, GoalForm, GoalCard, PayoutForm, PayoutList, StreakBadge |
-| Extra Features | Gig filtering, earnings aggregation, visual dashboard | Health status logic, streak tracking, payout status |
+| Feature        | Jinam Shah                                                            | Sanket Kothari                                                    |
+| -------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Collections    | `users`, `gigs`                                                       | `goals`                                                           |
+| CRUD           | Full CRUD on gigs                                                     | Full CRUD on goals + payouts                                      |
+| Components     | LoginForm, RegisterForm, GigList, GigForm, GigCard, EarningsDashboard | GoalList, GoalForm, GoalCard, PayoutForm, PayoutList, StreakBadge |
+| Extra Features | Gig filtering, earnings aggregation, visual dashboard                 | Health status logic, streak tracking, payout status               |
 
 ---
 
