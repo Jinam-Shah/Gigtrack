@@ -4,11 +4,17 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
+// Middleware — block unauthenticated requests
+function requireAuth(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: "Not logged in" });
+  next();
+}
+
 // Health status logic
 function getHealthStatus(goal) {
   const now = new Date();
   const [year, month] = goal.month.split("-").map(Number);
-  const monthEnd = new Date(year, month, 0); // last day of month
+  const monthEnd = new Date(year, month, 0);
 
   const received = goal.payouts
     .filter((p) => p.status === "received")
@@ -23,24 +29,20 @@ function getHealthStatus(goal) {
 }
 
 // GET /api/goals
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const { month, health } = req.query;
 
     let goals = await db
       .collection("goals")
-      .find({})
+      .find({ userId: new ObjectId(req.user._id) })
       .sort({ createdAt: -1 })
       .toArray();
 
-    // Attach health status
     goals = goals.map((g) => ({ ...g, health: getHealthStatus(g) }));
 
-    // Filter by month
     if (month) goals = goals.filter((g) => g.month === month);
-
-    // Filter by health
     if (health) goals = goals.filter((g) => g.health === health);
 
     res.json(goals);
@@ -50,7 +52,7 @@ router.get("/", async (req, res) => {
 });
 
 // POST /api/goals
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const { label, targetAmount, month } = req.body;
@@ -60,6 +62,7 @@ router.post("/", async (req, res) => {
     }
 
     const goal = {
+      userId: new ObjectId(req.user._id),
       label,
       targetAmount: parseFloat(targetAmount),
       month,
@@ -75,13 +78,16 @@ router.post("/", async (req, res) => {
 });
 
 // PUT /api/goals/:id
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const { label, targetAmount, month } = req.body;
 
     const result = await db.collection("goals").updateOne(
-      { _id: new ObjectId(req.params.id) },
+      {
+        _id: new ObjectId(req.params.id),
+        userId: new ObjectId(req.user._id),
+      },
       {
         $set: {
           label,
@@ -102,12 +108,13 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE /api/goals/:id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const db = getDB();
-    const result = await db
-      .collection("goals")
-      .deleteOne({ _id: new ObjectId(req.params.id) });
+    const result = await db.collection("goals").deleteOne({
+      _id: new ObjectId(req.params.id),
+      userId: new ObjectId(req.user._id),
+    });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "Goal not found" });
@@ -120,7 +127,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 // POST /api/goals/:id/payouts
-router.post("/:id/payouts", async (req, res) => {
+router.post("/:id/payouts", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const { source, amount, date, status } = req.body;
@@ -137,12 +144,13 @@ router.post("/:id/payouts", async (req, res) => {
       status,
     };
 
-    const result = await db
-      .collection("goals")
-      .updateOne(
-        { _id: new ObjectId(req.params.id) },
-        { $push: { payouts: payout } }
-      );
+    const result = await db.collection("goals").updateOne(
+      {
+        _id: new ObjectId(req.params.id),
+        userId: new ObjectId(req.user._id),
+      },
+      { $push: { payouts: payout } }
+    );
 
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: "Goal not found" });
@@ -155,7 +163,7 @@ router.post("/:id/payouts", async (req, res) => {
 });
 
 // PUT /api/goals/:id/payouts/:payoutId
-router.put("/:id/payouts/:payoutId", async (req, res) => {
+router.put("/:id/payouts/:payoutId", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const { source, amount, date, status } = req.body;
@@ -163,6 +171,7 @@ router.put("/:id/payouts/:payoutId", async (req, res) => {
     const result = await db.collection("goals").updateOne(
       {
         _id: new ObjectId(req.params.id),
+        userId: new ObjectId(req.user._id),
         "payouts._id": new ObjectId(req.params.payoutId),
       },
       {
@@ -186,11 +195,14 @@ router.put("/:id/payouts/:payoutId", async (req, res) => {
 });
 
 // DELETE /api/goals/:id/payouts/:payoutId
-router.delete("/:id/payouts/:payoutId", async (req, res) => {
+router.delete("/:id/payouts/:payoutId", requireAuth, async (req, res) => {
   try {
     const db = getDB();
     const result = await db.collection("goals").updateOne(
-      { _id: new ObjectId(req.params.id) },
+      {
+        _id: new ObjectId(req.params.id),
+        userId: new ObjectId(req.user._id),
+      },
       {
         $pull: {
           payouts: { _id: new ObjectId(req.params.payoutId) },
