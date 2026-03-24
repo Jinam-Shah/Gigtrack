@@ -1,3 +1,9 @@
+<!-- 
+Peer review comment:
+
+Great work on Gig Track!! Your web platform was super responsive! I liked the preconfigured dashboards. As a user it is analytics like this that inspire users to keep coming back! Additionally your frontend is very clean and easy to navigate! If I had to note anything it would be that the UI doesn't have much style to it other than a few emojis (great project to use for the the final) and some of the forms were a bit too vague in terms of usage, specifically in creating goals (it is unclear what the month field represents if it doesn't have any input validation, or what logic the user should understand to associate certain gigs with goals). Overall great work!!
+-->
+
 # 💼 GigTrack - Hustle Tracker & Earnings Dashboard
 
 > A full-stack personal side hustle tracker for students in the gig economy.
