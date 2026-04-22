@@ -1,4 +1,4 @@
-# 💼 GigTrack - Hustle Tracker & Earnings Dashboard
+# 💼 GigTrack — Hustle Tracker & Earnings Dashboard
 
 > A full-stack personal side hustle tracker for students in the gig economy.
 > Log every gig, rate your clients, track earnings on a visual dashboard,
@@ -8,10 +8,10 @@
 
 ## 👥 Authors
 
-| Name           | GitHub                                                 |
-| -------------- | ------------------------------------------------------ |
-| Jinam Shah     | [@Jinam-Shah](https://github.com/Jinam-Shah)           |
-| Sanket Kothari | [@Reachout-git-sk](https://github.com/Reachout-git-sk) |
+| Name           | GitHub                                                              |
+| -------------- | ------------------------------------------------------------------- |
+| Jinam Shah     | [@Jinam-Shah](https://github.com/Jinam-Shah)                        |
+| Sanket Kothari | [@Reachout-git-sk](https://github.com/Reachout-git-sk)              |
 
 ---
 
@@ -27,19 +27,15 @@
 ## 🖼️ Screenshots
 
 ### Login Page
+![Login Page](screenshots/login.png)
 
-![Home Page](screenshots/login.png)
-
-### My Gigs
-
+### My Gigs (Grid View)
 ![My Gigs](screenshots/Mygigs.png)
 
 ### Earnings Dashboard
-
 ![Dashboard](screenshots/dashboard.png)
 
-### Goals & Payouts
-
+### Goals & Payouts (Grid View)
 ![Goals](screenshots/goals.png)
 
 ---
@@ -55,8 +51,8 @@ target.
 but complementary modules:
 
 - **Gigs Module (Jinam):** Log every gig with full details, rate clients, filter
-  entries, and view a visual earnings dashboard with monthly totals and gig-type
-  breakdown.
+  entries, and view a visual earnings dashboard with monthly totals, gig-type
+  breakdown, status breakdown, and top clients chart.
 - **Goals Module (Sanket):** Set monthly income targets, log payouts as received
   or pending, view color-coded health status (on track / at risk / missed), and
   track a goal streak for consecutive months hitting the target.
@@ -104,8 +100,13 @@ raw numbers. GigTrack's color-coded goal health status gives her instant clarity
   or remove cancelled work.
 - As a **user**, I want to filter my gigs by type, client, and date range so I
   can find specific entries quickly.
-- As a **user**, I want a visual earnings dashboard showing monthly totals and a
-  breakdown by gig type so I can see where my money comes from.
+- As a **user**, I want to switch between grid and list view on the Gigs page so
+  I can browse my entries in the layout that suits me.
+- As a **user**, I want a visual earnings dashboard showing monthly totals,
+  earnings by gig type, earnings by status, and top clients so I can see exactly
+  where my money comes from.
+- As a **user**, I want to filter the dashboard by year, gig type, status, and
+  top N months so I can explore specific slices of my earnings data.
 
 ### Sanket Kothari — Income Goals & Payout Tracking
 
@@ -123,6 +124,8 @@ raw numbers. GigTrack's color-coded goal health status gives her instant clarity
   target and days left in the month.
 - As a **user**, I want to filter goals by month and health status so I can
   quickly find goals that need attention.
+- As a **user**, I want to switch between grid and list view on the Goals page so
+  I can browse my goals in the layout that suits me.
 - As a **user**, I want to see how many months in a row I have hit my income
   goal (my goal streak) so staying consistent feels rewarding.
 
@@ -144,6 +147,35 @@ raw numbers. GigTrack's color-coded goal health status gives her instant clarity
 
 ---
 
+## 🎨 Design System
+
+GigTrack uses a single `tokens.css` file as the source of truth for all design
+decisions. Every component references CSS variables — no hardcoded hex values
+anywhere in component CSS files.
+
+| Token category | Details |
+| -------------- | ------- |
+| **Fonts**      | `Syne` (headings — geometric, distinctive) + `DM Sans` (body — clean, optical-size aware) via Google Fonts |
+| **Primary**    | Indigo `#5c6bc0` — actions, links, active states |
+| **Success**    | Green `#43a047` — completed, on-track, received |
+| **Warning**    | Orange `#fb8c00` — at-risk, in-progress, pending |
+| **Danger**     | Red `#e53935` — missed, unpaid, delete actions |
+| **Gig types**  | Each type has its own accent color (tutoring=indigo, delivery=orange, design=teal, retail=red, other=purple) |
+
+---
+
+## ♿ Accessibility
+
+GigTrack is built to pass Lighthouse and axe audits:
+
+- **Keyboard navigation** — full app usable without a mouse; skip-to-main link on first Tab press
+- **Focus styles** — visible `:focus-visible` rings on every interactive element
+- **Semantic HTML** — `<main>`, `<nav>`, `<article>`, `<section>`, `<fieldset>`, `<legend>`, `<time>` used throughout
+- **ARIA** — bar charts have `role="img"` with full text descriptions; progress bars use `role="progressbar"`; all form inputs have explicit `<label htmlFor>` associations
+- **Heading hierarchy** — `h1` per page, `h2` per card, `h3` for sub-forms
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -153,27 +185,30 @@ Gigtrack/
 │   │   └── _redirects               # Routing for deployment
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── EarningsDashboard/   # EarningsDashboard.jsx + EarningsDashboard.css
-│   │   │   ├── GigCard/             # GigCard.jsx + GigCard.css
-│   │   │   ├── GigForm/             # GigForm.jsx + GigForm.css
-│   │   │   ├── GigList/             # GigList.jsx + GigList.css
-│   │   │   ├── GoalCard/            # GoalCard.jsx + GoalCard.css
-│   │   │   ├── GoalForm/            # GoalForm.jsx + GoalForm.css
-│   │   │   ├── GoalList/            # GoalList.jsx + GoalList.css
-│   │   │   ├── LoginForm/           # LoginForm.jsx + LoginForm.css
-│   │   │   ├── Navbar/              # Navbar.jsx + Navbar.css
-│   │   │   ├── PayoutForm/          # PayoutForm.jsx + PayoutForm.css
-│   │   │   ├── PayoutList/          # PayoutList.jsx + PayoutList.css
-│   │   │   ├── RegisterForm/        # RegisterForm.jsx + RegisterForm.css
-│   │   │   └── StreakBadge/         # StreakBadge.jsx + StreakBadge.css
+│   │   │   ├── EarningsDashboard/   # EarningsDashboard.jsx + .css
+│   │   │   ├── GigCard/             # GigCard.jsx + .css
+│   │   │   ├── GigForm/             # GigForm.jsx + .css
+│   │   │   ├── GigList/             # GigList.jsx + .css
+│   │   │   ├── GoalCard/            # GoalCard.jsx + .css
+│   │   │   ├── GoalForm/            # GoalForm.jsx + .css
+│   │   │   ├── GoalList/            # GoalList.jsx + .css
+│   │   │   ├── HowToUse/            # HowToUse.jsx + .css  ← in-app help panel
+│   │   │   ├── LoginForm/           # LoginForm.jsx + .css
+│   │   │   ├── Navbar/              # Navbar.jsx + .css
+│   │   │   ├── PayoutForm/          # PayoutForm.jsx + .css
+│   │   │   ├── PayoutList/          # PayoutList.jsx + .css
+│   │   │   ├── RegisterForm/        # RegisterForm.jsx + .css
+│   │   │   └── StreakBadge/         # StreakBadge.jsx + .css
 │   │   ├── pages/
-│   │   │   ├── DashboardPage.jsx    # Earnings dashboard page
-│   │   │   ├── GigsPage.jsx         # Gig list page
-│   │   │   ├── GoalsPage.jsx        # Goals page
-│   │   │   ├── HomePage.jsx         # Landing page
-│   │   │   ├── LoginPage.jsx        # Login page
-│   │   │   └── RegisterPage.jsx     # Registration page
+│   │   │   ├── DashboardPage.jsx
+│   │   │   ├── GigsPage.jsx
+│   │   │   ├── GoalsPage.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   └── RegisterPage.jsx
 │   │   ├── App.jsx                  # Root component + routing
+│   │   ├── tokens.css               # Design token variables (single source of truth)
+│   │   ├── index.css                # Global styles + Bootstrap overrides
 │   │   └── main.jsx                 # React entry point
 │   ├── .eslintrc.json
 │   ├── vite.config.js
@@ -203,7 +238,7 @@ Gigtrack/
 
 ## 🗄️ Database Schema
 
-### `users` collection (Jinam)
+### `users` collection
 
 ```json
 {
@@ -215,7 +250,7 @@ Gigtrack/
 }
 ```
 
-### `gigs` collection (Jinam)
+### `gigs` collection
 
 ```json
 {
@@ -236,11 +271,12 @@ Gigtrack/
 }
 ```
 
-### `goals` collection (Sanket)
+### `goals` collection
 
 ```json
 {
   "_id": "ObjectId",
+  "userId": "ObjectId (ref: users)",
   "label": "string",
   "targetAmount": "number",
   "month": "YYYY-MM",
@@ -289,7 +325,7 @@ SESSION_SECRET=any_long_random_string_here
 PORT=5000
 ```
 
-> ⚠️ Never commit your `.env` file. It is listed in `.gitignore`.
+> ⚠️ Never commit your `.env` file. It is already listed in `.gitignore`.
 
 ### 3. Configure the Client
 
@@ -309,8 +345,8 @@ node seed/seedGoals.js
 This creates:
 
 - **1000 synthetic gig records** spread across 2024
-- **Synthetic goal records** for each month
-- A **demo account** you can use to log in immediately:
+- **Synthetic goal records** for each month of 2024
+- A **demo account** you can use to explore immediately:
 
 | Field    | Value               |
 | -------- | ------------------- |
@@ -343,20 +379,21 @@ npm run dev
 
 ### 6. Open in Browser
 
-Navigate to **[http://localhost:5173](http://localhost:5173)**
+Navigate to [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## 💡 How to Use GigTrack
 
-1. **Register** a new account or use the **Demo Account** on the login page
-2. **Log a Gig** — click "+ Log a Gig" on the My Gigs page, fill in the details
-3. **Rate your client** — give a 1–5 star rating and add a note
-4. **View Dashboard** — see your monthly earnings and breakdown by gig type
-5. **Create a Goal** — go to Goals, click "+ New Goal", set a target amount and month
-6. **Log Payouts** — expand any goal and click "+ Add Payout" to track income
-7. **Monitor Health** — goals show 🟢 On Track / 🟡 At Risk / 🔴 Missed automatically
-8. **Track Streak** — hit your goal multiple months in a row to see your 🔥 streak
+1. **Register** a new account or click **Use Demo Account** on the login page
+2. **Log a Gig** — click `+ Log a Gig` on the My Gigs page, fill in title, client, type, date, rate, and optional star rating
+3. **Switch views** — toggle between ⊞ grid and ☰ list layout on both the Gigs and Goals pages
+4. **View Dashboard** — see total earnings, monthly totals, gig-type breakdown, status breakdown, and top clients; use the filter bar to slice by year, type, or status
+5. **Create a Goal** — go to Goals, click `+ New Goal`, set a label, target amount, and month
+6. **Log Payouts** — expand any goal card and click `+ Add Payout` to track received vs pending income
+7. **Monitor Health** — goals automatically show 🟢 On Track / 🟡 At Risk / 🔴 Missed based on progress
+8. **Track Streak** — hit your goal multiple months in a row to earn a 🔥 streak badge
+9. **In-app help** — click the `?` button in the bottom-right corner at any time to reopen the usage guide
 
 ---
 
@@ -364,12 +401,12 @@ Navigate to **[http://localhost:5173](http://localhost:5173)**
 
 Both modules are **fully functional independently**:
 
-| Feature        | Jinam Shah                                                            | Sanket Kothari                                                    |
-| -------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Collections    | `users`, `gigs`                                                       | `goals`                                                           |
-| CRUD           | Full CRUD on gigs                                                     | Full CRUD on goals + payouts                                      |
-| Components     | LoginForm, RegisterForm, GigList, GigForm, GigCard, EarningsDashboard | GoalList, GoalForm, GoalCard, PayoutForm, PayoutList, StreakBadge |
-| Extra Features | Gig filtering, earnings aggregation, visual dashboard                 | Health status logic, streak tracking, payout status               |
+| Feature        | Jinam Shah                                                                          | Sanket Kothari                                                       |
+| -------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Collections    | `users`, `gigs`                                                                     | `goals`                                                              |
+| CRUD           | Full CRUD on gigs                                                                   | Full CRUD on goals + embedded payouts                                |
+| Components     | LoginForm, RegisterForm, GigList, GigForm, GigCard, EarningsDashboard, HowToUse     | GoalList, GoalForm, GoalCard, PayoutForm, PayoutList, StreakBadge    |
+| Extra Features | Gig filtering, grid/list toggle, earnings dashboard with 4 charts + 4 filters       | Health status logic, streak tracking, payout status, grid/list toggle |
 
 ---
 
