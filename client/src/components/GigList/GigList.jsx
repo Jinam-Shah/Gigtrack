@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import GigCard from "../GigCard/GigCard.jsx";
 import GigForm from "../GigForm/GigForm.jsx";
@@ -11,15 +11,15 @@ export default function GigList({ userId }) {
   const [loading, setLoading] = useState(true);
   const [editingGig, setEditingGig] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [viewMode, setViewMode] = useState("grid");
   const [filters, setFilters] = useState({
     type: "",
     client: "",
     startDate: "",
     endDate: "",
-    minRating: "",
   });
 
-  async function fetchGigs() {
+  const fetchGigs = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -27,7 +27,6 @@ export default function GigList({ userId }) {
       if (filters.client) params.append("client", filters.client);
       if (filters.startDate) params.append("startDate", filters.startDate);
       if (filters.endDate) params.append("endDate", filters.endDate);
-      if (filters.minRating) params.append("minRating", filters.minRating);
 
       const res = await fetch(`/api/gigs?${params.toString()}`, {
         credentials: "include",
@@ -43,15 +42,11 @@ export default function GigList({ userId }) {
     } finally {
       setLoading(false);
     }
-  }
-
-  // Compute totals for filtered gigs
-  const filteredTotal = gigs.reduce((sum, gig) => sum + gig.earnings, 0);
-  const filteredCount = gigs.length;
+  }, [filters]);
 
   useEffect(() => {
     fetchGigs();
-  }, []);
+  }, [fetchGigs]);
 
   async function handleDelete(id) {
     if (!window.confirm("Delete this gig?")) return;
@@ -69,6 +64,7 @@ export default function GigList({ userId }) {
   function handleEdit(gig) {
     setEditingGig(gig);
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleFormSuccess() {
@@ -83,132 +79,166 @@ export default function GigList({ userId }) {
 
   return (
     <Container className="giglist-container">
+      {/* Page header */}
       <div className="giglist-header">
-        <h2>My Gigs</h2>
-        <Button
-          variant="primary"
-          onClick={() => {
-            setEditingGig(null);
-            setShowForm(!showForm);
-          }}
-        >
-          {showForm ? "Cancel" : "+ Log a Gig"}
-        </Button>
+        <h1 className="giglist-heading">My Gigs</h1>
+        <div className="giglist-header-actions">
+          {/* View toggle */}
+          <div
+            className="giglist-view-toggle"
+            role="group"
+            aria-label="View mode"
+          >
+            <button
+              className={`giglist-view-btn ${viewMode === "grid" ? "giglist-view-btn--active" : ""}`}
+              onClick={() => setViewMode("grid")}
+              aria-pressed={viewMode === "grid"}
+              aria-label="Grid view"
+              title="Grid view"
+            >
+              ⊞
+            </button>
+            <button
+              className={`giglist-view-btn ${viewMode === "list" ? "giglist-view-btn--active" : ""}`}
+              onClick={() => setViewMode("list")}
+              aria-pressed={viewMode === "list"}
+              aria-label="List view"
+              title="List view"
+            >
+              ☰
+            </button>
+          </div>
+
+          <Button
+            variant="primary"
+            onClick={() => {
+              setEditingGig(null);
+              setShowForm(!showForm);
+            }}
+            aria-expanded={showForm}
+            aria-controls="gig-form-region"
+          >
+            {showForm ? "Cancel" : "+ Log a Gig"}
+          </Button>
+        </div>
       </div>
 
+      {/* Form */}
       {showForm && (
-        <GigForm onSuccess={handleFormSuccess} existingGig={editingGig} />
-      )}
-
-      <div className="giglist-filters" role="search" aria-label="Filter gigs">
-        <Row>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label visuallyHidden>Gig Type</Form.Label>
-              <Form.Select
-                name="type"
-                value={filters.type}
-                onChange={handleFilterChange}
-                aria-label="Filter by gig type"
-              >
-                <option value="">All Types</option>
-                <option value="tutoring">Tutoring</option>
-                <option value="delivery">Delivery</option>
-                <option value="design">Design</option>
-                <option value="retail">Retail</option>
-                <option value="other">Other</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label visuallyHidden>Client Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="client"
-                placeholder="Filter by client"
-                value={filters.client}
-                onChange={handleFilterChange}
-                aria-label="Filter by client name"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label visuallyHidden>Start Date</Form.Label>
-              <Form.Control
-                type="date"
-                name="startDate"
-                value={filters.startDate}
-                onChange={handleFilterChange}
-                aria-label="Filter from date"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label visuallyHidden>End Date</Form.Label>
-              <Form.Control
-                type="date"
-                name="endDate"
-                value={filters.endDate}
-                onChange={handleFilterChange}
-                aria-label="Filter to date"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label visuallyHidden>Minimum Rating</Form.Label>
-              <Form.Select
-                name="minRating"
-                value={filters.minRating}
-                onChange={handleFilterChange}
-                aria-label="Filter by minimum rating"
-              >
-                <option value="">All Ratings</option>
-                <option value="1">1+ Stars</option>
-                <option value="2">2+ Stars</option>
-                <option value="3">3+ Stars</option>
-                <option value="4">4+ Stars</option>
-                <option value="5">5 Stars</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={2}>
-            <Button variant="outline-secondary" onClick={fetchGigs} aria-label="Apply filters">
-              Apply Filters
-            </Button>
-          </Col>
-        </Row>
-      </div>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-      {loading && <p>Loading gigs...</p>}
-      {!loading && gigs.length === 0 && (
-        <p className="giglist-empty">No gigs found. Log your first gig!</p>
-      )}
-
-      {/* Filtered totals summary */}
-      {!loading && gigs.length > 0 && (
-        <div className="giglist-summary">
-          <span className="giglist-count">{filteredCount} gig(s)</span>
-          <span className="giglist-total">
-            Total: ${filteredTotal.toFixed(2)}
-          </span>
+        <div id="gig-form-region">
+          <GigForm onSuccess={handleFormSuccess} existingGig={editingGig} />
         </div>
       )}
 
-      <div className="giglist-grid">
-        {gigs.map((gig) => (
-          <GigCard
-            key={gig._id}
-            gig={gig}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {/* Filters */}
+      <fieldset className="giglist-filters">
+        <legend className="giglist-filters-legend">Filter Gigs</legend>
+        <Row className="g-2">
+          <Col md={3} sm={6}>
+            <Form.Label htmlFor="filter-type" className="visually-hidden">
+              Gig type
+            </Form.Label>
+            <Form.Select
+              id="filter-type"
+              name="type"
+              value={filters.type}
+              onChange={handleFilterChange}
+            >
+              <option value="">All Types</option>
+              <option value="tutoring">Tutoring</option>
+              <option value="delivery">Delivery</option>
+              <option value="design">Design</option>
+              <option value="retail">Retail</option>
+              <option value="other">Other</option>
+            </Form.Select>
+          </Col>
+          <Col md={3} sm={6}>
+            <Form.Label htmlFor="filter-client" className="visually-hidden">
+              Client name
+            </Form.Label>
+            <Form.Control
+              id="filter-client"
+              type="text"
+              name="client"
+              placeholder="Filter by client"
+              value={filters.client}
+              onChange={handleFilterChange}
+            />
+          </Col>
+          <Col md={2} sm={6}>
+            <Form.Label htmlFor="filter-start" className="visually-hidden">
+              Start date
+            </Form.Label>
+            <Form.Control
+              id="filter-start"
+              type="date"
+              name="startDate"
+              value={filters.startDate}
+              onChange={handleFilterChange}
+            />
+          </Col>
+          <Col md={2} sm={6}>
+            <Form.Label htmlFor="filter-end" className="visually-hidden">
+              End date
+            </Form.Label>
+            <Form.Control
+              id="filter-end"
+              type="date"
+              name="endDate"
+              value={filters.endDate}
+              onChange={handleFilterChange}
+            />
+          </Col>
+          <Col md={2} sm={12}>
+            <Button
+              variant="outline-secondary"
+              onClick={fetchGigs}
+              className="w-100"
+            >
+              Apply
+            </Button>
+          </Col>
+        </Row>
+      </fieldset>
+
+      {/* Results count */}
+      {!loading && gigs.length > 0 && (
+        <p className="giglist-count" aria-live="polite">
+          {gigs.length} gig{gigs.length !== 1 ? "s" : ""} found
+        </p>
+      )}
+
+      {error && (
+        <Alert variant="danger" role="alert">
+          {error}
+        </Alert>
+      )}
+
+      {/* Gigs */}
+      <section aria-live="polite" aria-label="Gigs list">
+        {loading && <p className="giglist-loading">Loading gigs...</p>}
+
+        {!loading && gigs.length === 0 && (
+          <p className="giglist-empty">No gigs found. Log your first gig!</p>
+        )}
+
+        {!loading && gigs.length > 0 && (
+          <div
+            className={
+              viewMode === "grid" ? "giglist-grid" : "giglist-list"
+            }
+          >
+            {gigs.map((gig) => (
+              <GigCard
+                key={gig._id}
+                gig={gig}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </Container>
   );
 }

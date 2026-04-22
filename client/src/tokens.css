@@ -1,0 +1,94 @@
+/* ============================================================
+   GigTrack Design Tokens
+   Import this file once in main.jsx or index.css.
+   All components reference these variables — never raw hex.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  /* ── Brand Palette ──────────────────────────────── */
+  --color-primary:        #5c6bc0;   /* indigo — main actions, links        */
+  --color-primary-dark:   #3949ab;   /* hover / pressed state               */
+  --color-primary-light:  #e8eaf6;   /* tinted backgrounds                  */
+
+  --color-accent:         #00bfa5;   /* teal — positive stats, avg per gig  */
+  --color-accent-dark:    #00897b;
+
+  /* ── Semantic / Status ──────────────────────────── */
+  --color-success:        #2e7d32;   /* completed, on-track, received        */
+  --color-success-bg:     #e8f5e9;
+  --color-success-mid:    #43a047;   /* bar fills                            */
+
+  --color-warning:        #e65100;   /* at-risk, in-progress, pending        */
+  --color-warning-bg:     #fff3e0;
+  --color-warning-mid:    #fb8c00;
+
+  --color-danger:         #c62828;   /* missed, unpaid, delete               */
+  --color-danger-bg:      #ffebee;
+  --color-danger-mid:     #e53935;
+
+  /* ── Neutrals ───────────────────────────────────── */
+  --color-ink:            #1a1a2e;   /* primary text / headings              */
+  --color-ink-secondary:  #4a4a6a;   /* secondary text                       */
+  --color-ink-muted:      #8888aa;   /* placeholders, hints                  */
+  --color-border:         #e2e4f0;   /* card & input borders                 */
+  --color-surface:        #ffffff;   /* card backgrounds                     */
+  --color-bg:             #f5f6fb;   /* page background                      */
+  --color-bg-subtle:      #f0f1f8;   /* filter bars, code blocks             */
+
+  /* ── Gig-type colors (consistent everywhere) ───── */
+  --color-type-tutoring:  #5c6bc0;
+  --color-type-delivery:  #fb8c00;
+  --color-type-design:    #00bfa5;
+  --color-type-retail:    #e53935;
+  --color-type-other:     #8e24aa;
+
+  /* ── Gradients ──────────────────────────────────── */
+  --gradient-primary:     linear-gradient(135deg, #5c6bc0, #3949ab);
+  --gradient-accent:      linear-gradient(135deg, #00bfa5, #00897b);
+  --gradient-warn:        linear-gradient(135deg, #fb8c00, #e65100);
+  --gradient-danger:      linear-gradient(135deg, #e53935, #c62828);
+  --gradient-nav:         linear-gradient(135deg, #1a1a2e, #2a2a4e);
+  --gradient-streak:      linear-gradient(135deg, #f7971e, #ffd200);
+
+  /* ── Typography ─────────────────────────────────── */
+  --font-heading:  'Syne', sans-serif;
+  --font-body:     'DM Sans', sans-serif;
+
+  --text-xs:    0.75rem;
+  --text-sm:    0.85rem;
+  --text-base:  1rem;
+  --text-lg:    1.125rem;
+  --text-xl:    1.375rem;
+  --text-2xl:   1.75rem;
+  --text-3xl:   2.25rem;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semi:    600;
+  --weight-bold:    700;
+
+  /* ── Spacing ────────────────────────────────────── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+
+  /* ── Radius ─────────────────────────────────────── */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ────────────────────────────────────── */
+  --shadow-sm:  0 1px 4px rgba(26, 26, 46, 0.07);
+  --shadow-md:  0 4px 16px rgba(26, 26, 46, 0.10);
+  --shadow-lg:  0 8px 32px rgba(26, 26, 46, 0.14);
+  --shadow-primary: 0 4px 14px rgba(92, 107, 192, 0.30);
+}

@@ -62,15 +62,24 @@ export default function PayoutForm({ goalId, onSuccess, existingPayout }) {
   }
 
   return (
-    <div className="payoutform-wrapper">
-      <h6 className="payoutform-title">
+    <div
+      className="payoutform-wrapper"
+      role="region"
+      aria-label={existingPayout ? "Edit payout form" : "Log payout form"}
+    >
+      <h3 className="payoutform-title">
         {existingPayout ? "Edit Payout" : "Log a Payout"}
-      </h6>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
+      </h3>
+      {error && (
+        <Alert variant="danger" role="alert">
+          {error}
+        </Alert>
+      )}
+      <Form onSubmit={handleSubmit} noValidate>
         <Form.Group className="mb-2">
-          <Form.Label>Source</Form.Label>
+          <Form.Label htmlFor="payout-source">Source</Form.Label>
           <Form.Control
+            id="payout-source"
             type="text"
             name="source"
             value={formData.source}
@@ -79,20 +88,26 @@ export default function PayoutForm({ goalId, onSuccess, existingPayout }) {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-2">
-          <Form.Label>Amount ($)</Form.Label>
+          <Form.Label htmlFor="payout-amount">Amount ($)</Form.Label>
           <Form.Control
+            id="payout-amount"
             type="number"
             name="amount"
             value={formData.amount}
             onChange={handleChange}
             placeholder="0.00"
+            min="0"
+            step="0.01"
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-2">
-          <Form.Label>Date</Form.Label>
+          <Form.Label htmlFor="payout-date">Date</Form.Label>
           <Form.Control
+            id="payout-date"
             type="date"
             name="date"
             value={formData.date}
@@ -100,9 +115,11 @@ export default function PayoutForm({ goalId, onSuccess, existingPayout }) {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
-          <Form.Label>Status</Form.Label>
+          <Form.Label htmlFor="payout-status">Status</Form.Label>
           <Form.Select
+            id="payout-status"
             name="status"
             value={formData.status}
             onChange={handleChange}
@@ -111,6 +128,7 @@ export default function PayoutForm({ goalId, onSuccess, existingPayout }) {
             <option value="pending">Pending</option>
           </Form.Select>
         </Form.Group>
+
         <Button type="submit" variant="primary" size="sm" disabled={loading}>
           {loading ? "Saving..." : existingPayout ? "Update" : "Add Payout"}
         </Button>

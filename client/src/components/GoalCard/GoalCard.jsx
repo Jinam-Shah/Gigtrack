@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Badge, Button } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import PayoutList from "../PayoutList/PayoutList.jsx";
 import StreakBadge from "../StreakBadge/StreakBadge.jsx";
 import PropTypes from "prop-types";
@@ -27,15 +27,28 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
     100
   );
 
+  const payoutsId = `payouts-${goal._id}`;
+  const healthClass = goal.health.replace(" ", "-");
+
   return (
-    <Card className="goalcard">
-      <Card.Body>
+    <article
+      className={`goalcard goalcard--${healthClass}`}
+      aria-label={`Goal: ${goal.label}`}
+    >
+      {/* Health-colored accent bar */}
+      <div
+        className={`goalcard-accent goalcard-accent--${healthClass}`}
+        aria-hidden="true"
+      />
+
+      <div className="goalcard-body">
+        {/* Header */}
         <div className="goalcard-header">
-          <div>
-            <h5 className="goalcard-label">{goal.label}</h5>
-            <span className="goalcard-month">{goal.month}</span>
+          <div className="goalcard-header-left">
+            <h2 className="goalcard-label">{goal.label}</h2>
+            <time className="goalcard-month">{goal.month}</time>
           </div>
-          <div className="goalcard-right">
+          <div className="goalcard-header-right">
             <Badge bg={HEALTH_COLORS[goal.health] || "secondary"}>
               {goal.health}
             </Badge>
@@ -43,37 +56,55 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
           </div>
         </div>
 
-        <div className="goalcard-progress-track">
+        {/* Progress */}
+        <div className="goalcard-progress-section">
           <div
-            className={`goalcard-progress-fill goalcard-progress-fill--${goal.health.replace(" ", "-")}`}
-            style={{ width: `${percent}%` }}
-          />
+            className="goalcard-progress-track"
+            role="progressbar"
+            aria-valuenow={percent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Goal progress: ${percent}% of $${goal.targetAmount.toFixed(2)} target reached`}
+          >
+            <div
+              className={`goalcard-progress-fill goalcard-progress-fill--${healthClass}`}
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <span className="goalcard-percent">{percent}%</span>
         </div>
 
+        {/* Amounts */}
         <div className="goalcard-amounts">
           <span className="goalcard-received">
-            ${received.toFixed(2)} received
+            ${received.toFixed(2)}
+            <span className="goalcard-amounts-sublabel"> received</span>
           </span>
           <span className="goalcard-target">
             of ${goal.targetAmount.toFixed(2)}
           </span>
           {pending > 0 && (
             <span className="goalcard-pending">
-              (${pending.toFixed(2)} pending)
+              +${pending.toFixed(2)} pending
             </span>
           )}
         </div>
 
+        {/* Payout count chip */}
+        <div className="goalcard-payout-count">
+          <span>{goal.payouts.length} payout{goal.payouts.length !== 1 ? "s" : ""} logged</span>
+        </div>
+
+        {/* Actions */}
         <div className="goalcard-actions">
           <Button
             variant="outline-secondary"
             size="sm"
             onClick={() => setShowPayouts(!showPayouts)}
             aria-expanded={showPayouts}
-            aria-controls="payouts-section"
-            aria-label={showPayouts ? "Hide payouts" : "Show payouts"}
+            aria-controls={payoutsId}
           >
-            {showPayouts ? "Hide Payouts" : "Show Payouts"}
+            {showPayouts ? "Hide Payouts" : "Payouts"}
           </Button>
           <Button
             variant="outline-primary"
@@ -93,25 +124,18 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
           </Button>
         </div>
 
-        {showPayouts && (
-          <div id="payouts-section" role="region" aria-label="Payouts for this goal">
+        {/* Payouts panel — expands inside the card */}
+        <div id={payoutsId}>
+          {showPayouts && (
             <PayoutList
               goalId={goal._id}
               payouts={goal.payouts}
               onRefresh={onRefresh}
             />
-          </div>
-        )}
-
-        {showPayouts && (
-          <PayoutList
-            goalId={goal._id}
-            payouts={goal.payouts}
-            onRefresh={onRefresh}
-          />
-        )}
-      </Card.Body>
-    </Card>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 

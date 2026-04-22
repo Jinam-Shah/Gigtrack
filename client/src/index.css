@@ -1,4 +1,123 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+
+/* Bootstrap overrides — keep Bootstrap but align to our palette */
+.btn-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+}
+
+.btn-success {
+  background-color: var(--color-success-mid) !important;
+  border-color: var(--color-success-mid) !important;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: var(--color-success) !important;
+  border-color: var(--color-success) !important;
+}
+
+.btn-outline-primary {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: var(--color-primary) !important;
+  color: #fff !important;
+}
+
+.btn-outline-danger {
+  color: var(--color-danger) !important;
+  border-color: var(--color-danger) !important;
+}
+.btn-outline-danger:hover,
+.btn-outline-danger:focus {
+  background-color: var(--color-danger) !important;
+  color: #fff !important;
+}
+
+.btn-outline-secondary {
+  color: var(--color-ink-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background-color: var(--color-bg-subtle) !important;
+  color: var(--color-ink) !important;
+}
+
+/* Form controls */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.18) !important;
+}
+
+/* Badge overrides */
+.badge.bg-primary   { background-color: var(--color-primary) !important; }
+.badge.bg-success   { background-color: var(--color-success-mid) !important; }
+.badge.bg-warning   { background-color: var(--color-warning-mid) !important; color: #fff !important; }
+.badge.bg-danger    { background-color: var(--color-danger-mid) !important; }
+.badge.bg-info      { background-color: var(--color-accent) !important; }
+.badge.bg-secondary { background-color: var(--color-ink-muted) !important; }
+
+/* ── Global keyboard focus styles ───────────────────────────
+   Visible focus rings for ALL interactive elements.
+   Uses :focus-visible so mouse users don't see the ring.
+   ──────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default outline only when our custom one is shown */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Bootstrap buttons need explicit override */
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+.btn-outline-light:focus-visible {
+  outline-color: #ffffff !important;
+}
+
+/* Form controls */
+.form-control:focus-visible,
+.form-select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
 }

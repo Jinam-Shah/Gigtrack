@@ -41,48 +41,60 @@ export default function RegisterForm({ onSuccess }) {
 
   return (
     <Container className="register-container">
-      <Card className="register-card">
+      <Card
+        className="register-card"
+        as="section"
+        aria-labelledby="register-heading"
+      >
         <Card.Body>
-          <h2 className="register-title">Create Account</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
+          <h1 id="register-heading" className="register-title">
+            Create Account
+          </h1>
+
+          {error && (
+            <Alert variant="danger" role="alert">
+              {error}
+            </Alert>
+          )}
+
+          <Form onSubmit={handleSubmit} noValidate>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="register-name">Name</Form.Label>
+              <Form.Label htmlFor="reg-name">Name</Form.Label>
               <Form.Control
-                id="register-name"
+                id="reg-name"
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your full name"
-                required
                 autoComplete="name"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="register-email">Email</Form.Label>
+              <Form.Label htmlFor="reg-email">Email</Form.Label>
               <Form.Control
-                id="register-email"
+                id="reg-email"
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@email.com"
-                required
                 autoComplete="email"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="register-password">Password</Form.Label>
+              <Form.Label htmlFor="reg-password">Password</Form.Label>
               <Form.Control
-                id="register-password"
+                id="reg-password"
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Choose a password"
-                required
                 autoComplete="new-password"
+                required
               />
             </Form.Group>
             <Button

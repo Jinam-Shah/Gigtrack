@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import GoalCard from "../GoalCard/GoalCard.jsx";
 import GoalForm from "../GoalForm/GoalForm.jsx";
@@ -36,9 +36,10 @@ export default function GoalList({ userId }) {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingGoal, setEditingGoal] = useState(null);
+  const [viewMode, setViewMode] = useState("grid");
   const [filters, setFilters] = useState({ month: "", health: "" });
 
-  async function fetchGoals() {
+  const fetchGoals = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -64,11 +65,11 @@ export default function GoalList({ userId }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [filters]);
 
   useEffect(() => {
     fetchGoals();
-  }, []);
+  }, [fetchGoals]);
 
   async function handleDelete(id) {
     if (!window.confirm("Delete this goal?")) return;
@@ -82,6 +83,7 @@ export default function GoalList({ userId }) {
   function handleEdit(goal) {
     setEditingGoal(goal);
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleFormSuccess() {
@@ -96,35 +98,82 @@ export default function GoalList({ userId }) {
 
   return (
     <Container className="goallist-container">
+      {/* Page header */}
       <div className="goallist-header">
-        <h2>My Goals</h2>
-        <Button
-          variant="success"
-          onClick={() => {
-            setEditingGoal(null);
-            setShowForm(!showForm);
-          }}
-        >
-          {showForm ? "Cancel" : "+ New Goal"}
-        </Button>
+        <h1 className="goallist-heading">My Goals</h1>
+        <div className="goallist-header-actions">
+          {/* View toggle */}
+          <div
+            className="goallist-view-toggle"
+            role="group"
+            aria-label="View mode"
+          >
+            <button
+              className={`goallist-view-btn ${viewMode === "grid" ? "goallist-view-btn--active" : ""}`}
+              onClick={() => setViewMode("grid")}
+              aria-pressed={viewMode === "grid"}
+              aria-label="Grid view"
+              title="Grid view"
+            >
+              ⊞
+            </button>
+            <button
+              className={`goallist-view-btn ${viewMode === "list" ? "goallist-view-btn--active" : ""}`}
+              onClick={() => setViewMode("list")}
+              aria-pressed={viewMode === "list"}
+              aria-label="List view"
+              title="List view"
+            >
+              ☰
+            </button>
+          </div>
+
+          <Button
+            variant="success"
+            onClick={() => {
+              setEditingGoal(null);
+              setShowForm(!showForm);
+            }}
+            aria-expanded={showForm}
+            aria-controls="goal-form-region"
+          >
+            {showForm ? "Cancel" : "+ New Goal"}
+          </Button>
+        </div>
       </div>
 
+      {/* Form */}
       {showForm && (
-        <GoalForm onSuccess={handleFormSuccess} existingGoal={editingGoal} />
+        <div id="goal-form-region">
+          <GoalForm onSuccess={handleFormSuccess} existingGoal={editingGoal} />
+        </div>
       )}
 
-      <div className="goallist-filters">
-        <Row>
-          <Col md={4}>
+      {/* Filters */}
+      <fieldset className="goallist-filters">
+        <legend className="goallist-filters-legend">Filter Goals</legend>
+        <Row className="g-2">
+          <Col md={4} sm={6}>
+            <Form.Label htmlFor="goal-filter-month" className="visually-hidden">
+              Month
+            </Form.Label>
             <Form.Control
+              id="goal-filter-month"
               type="month"
               name="month"
               value={filters.month}
               onChange={handleFilterChange}
             />
           </Col>
-          <Col md={4}>
+          <Col md={4} sm={6}>
+            <Form.Label
+              htmlFor="goal-filter-health"
+              className="visually-hidden"
+            >
+              Health status
+            </Form.Label>
             <Form.Select
+              id="goal-filter-health"
               name="health"
               value={filters.health}
               onChange={handleFilterChange}
@@ -135,30 +184,59 @@ export default function GoalList({ userId }) {
               <option value="missed">Missed</option>
             </Form.Select>
           </Col>
-          <Col md={4}>
-            <Button variant="outline-secondary" onClick={fetchGoals}>
-              Apply Filters
+          <Col md={4} sm={12}>
+            <Button
+              variant="outline-secondary"
+              onClick={fetchGoals}
+              className="w-100"
+            >
+              Apply
             </Button>
           </Col>
         </Row>
-      </div>
+      </fieldset>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-      {loading && <p>Loading goals...</p>}
-      {!loading && goals.length === 0 && (
-        <p className="goallist-empty">
-          No goals found. Create your first goal!
+      {/* Results count */}
+      {!loading && goals.length > 0 && (
+        <p className="goallist-count" aria-live="polite">
+          {goals.length} goal{goals.length !== 1 ? "s" : ""} found
         </p>
       )}
-      {goals.map((goal) => (
-        <GoalCard
-          key={goal._id}
-          goal={goal}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onRefresh={fetchGoals}
-        />
-      ))}
+
+      {error && (
+        <Alert variant="danger" role="alert">
+          {error}
+        </Alert>
+      )}
+
+      {/* Goals */}
+      <section aria-live="polite" aria-label="Goals list">
+        {loading && <p className="goallist-loading">Loading goals...</p>}
+
+        {!loading && goals.length === 0 && (
+          <p className="goallist-empty">
+            No goals found. Create your first goal!
+          </p>
+        )}
+
+        {!loading && goals.length > 0 && (
+          <div
+            className={
+              viewMode === "grid" ? "goallist-grid" : "goallist-list"
+            }
+          >
+            {goals.map((goal) => (
+              <GoalCard
+                key={goal._id}
+                goal={goal}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onRefresh={fetchGoals}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </Container>
   );
 }

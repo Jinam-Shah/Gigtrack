@@ -60,12 +60,20 @@ export default function GoalForm({ onSuccess, existingGoal }) {
   }
 
   return (
-    <div className="goalform-wrapper">
-      <h4 className="goalform-title">
+    <div
+      className="goalform-wrapper"
+      role="region"
+      aria-label={existingGoal ? "Edit goal form" : "Create new goal form"}
+    >
+      <h2 className="goalform-title">
         {existingGoal ? "Edit Goal" : "Create a New Goal"}
-      </h4>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
+      </h2>
+      {error && (
+        <Alert variant="danger" role="alert">
+          {error}
+        </Alert>
+      )}
+      <Form onSubmit={handleSubmit} noValidate>
         <Form.Group className="mb-3">
           <Form.Label htmlFor="goal-label">Label</Form.Label>
           <Form.Control
@@ -78,18 +86,22 @@ export default function GoalForm({ onSuccess, existingGoal }) {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="goal-amount">Target Amount ($)</Form.Label>
+          <Form.Label htmlFor="goal-target">Target Amount ($)</Form.Label>
           <Form.Control
-            id="goal-amount"
+            id="goal-target"
             type="number"
             name="targetAmount"
             value={formData.targetAmount}
             onChange={handleChange}
             placeholder="e.g. 1500"
+            min="1"
+            step="1"
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label htmlFor="goal-month">Month</Form.Label>
           <Form.Control
@@ -101,8 +113,13 @@ export default function GoalForm({ onSuccess, existingGoal }) {
             required
           />
         </Form.Group>
+
         <Button type="submit" variant="success" disabled={loading}>
-          {loading ? "Saving..." : existingGoal ? "Update Goal" : "Create Goal"}
+          {loading
+            ? "Saving..."
+            : existingGoal
+              ? "Update Goal"
+              : "Create Goal"}
         </Button>
       </Form>
     </div>

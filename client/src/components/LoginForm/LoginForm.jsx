@@ -45,9 +45,11 @@ export default function LoginForm({ onSuccess }) {
 
   return (
     <Container className="login-container">
-      <Card className="login-card">
+      <Card className="login-card" as="section" aria-labelledby="login-heading">
         <Card.Body>
-          <h2 className="login-title">Welcome Back</h2>
+          <h1 id="login-heading" className="login-title">
+            Welcome Back
+          </h1>
 
           <div className="login-demo-box">
             <p className="login-demo-text">
@@ -67,9 +69,13 @@ export default function LoginForm({ onSuccess }) {
             </p>
           </div>
 
-          {error && <Alert variant="danger">{error}</Alert>}
+          {error && (
+            <Alert variant="danger" role="alert">
+              {error}
+            </Alert>
+          )}
 
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} noValidate>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="login-email">Email</Form.Label>
               <Form.Control
@@ -79,8 +85,8 @@ export default function LoginForm({ onSuccess }) {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@email.com"
-                required
                 autoComplete="email"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -92,8 +98,8 @@ export default function LoginForm({ onSuccess }) {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Your password"
-                required
                 autoComplete="current-password"
+                required
               />
             </Form.Group>
             <Button

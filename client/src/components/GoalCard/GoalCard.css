@@ -1,89 +1,177 @@
 .goalcard {
-  border-radius: 12px;
-  margin-bottom: 1.25rem;
-  border: 1px solid #e8e8f0;
-  transition: box-shadow 0.2s;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.18s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .goalcard:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
+/* Health-colored top accent stripe */
+.goalcard-accent {
+  height: 4px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.goalcard-accent--on-track { background: var(--color-success-mid); }
+.goalcard-accent--at-risk  { background: var(--color-warning-mid); }
+.goalcard-accent--missed   { background: var(--color-danger-mid); }
+
+/* Body */
+.goalcard-body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-3);
+}
+
+/* Header */
 .goalcard-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.75rem;
+  gap: var(--space-2);
+}
+
+.goalcard-header-left {
+  flex: 1;
+  min-width: 0;
 }
 
 .goalcard-label {
-  font-weight: 700;
-  margin: 0;
-  color: #1a1a2e;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .goalcard-month {
-  font-size: 0.85rem;
-  color: #888;
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  display: block;
+  font-family: var(--font-body);
 }
 
-.goalcard-right {
+.goalcard-header-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.4rem;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Progress */
+.goalcard-progress-section {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .goalcard-progress-track {
-  background: #f0f0f5;
-  border-radius: 6px;
-  height: 10px;
-  margin-bottom: 0.5rem;
+  flex: 1;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-pill);
+  height: 8px;
   overflow: hidden;
 }
 
 .goalcard-progress-fill {
   height: 100%;
-  border-radius: 6px;
-  transition: width 0.4s ease;
+  border-radius: var(--radius-pill);
+  transition: width 0.5s ease;
 }
 
 .goalcard-progress-fill--on-track {
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  background: var(--gradient-accent);
 }
 
 .goalcard-progress-fill--at-risk {
-  background: linear-gradient(90deg, #f39c12, #e67e22);
+  background: var(--gradient-warn);
 }
 
 .goalcard-progress-fill--missed {
-  background: linear-gradient(90deg, #e74c3c, #c0392b);
+  background: var(--gradient-danger);
 }
 
+.goalcard-percent {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-ink-secondary);
+  min-width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Amounts */
 .goalcard-amounts {
   display: flex;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
+  gap: var(--space-3);
+  align-items: baseline;
   flex-wrap: wrap;
 }
 
 .goalcard-received {
-  font-weight: 700;
-  color: #2ecc71;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-success-mid);
+  line-height: 1;
+}
+
+.goalcard-amounts-sublabel {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-ink-muted);
 }
 
 .goalcard-target {
-  color: #555;
+  font-size: var(--text-sm);
+  color: var(--color-ink-secondary);
 }
 
 .goalcard-pending {
-  color: #e67e22;
+  font-size: var(--text-xs);
+  color: var(--color-warning-mid);
   font-style: italic;
+  background: var(--color-warning-bg);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--space-2);
 }
 
+/* Payout count chip */
+.goalcard-payout-count {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+}
+
+/* Actions pinned to bottom */
 .goalcard-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+/* When payouts are expanded, don't let the card get too crazy tall in grid */
+.goalcard-body > #payouts-section {
+  overflow: hidden;
 }

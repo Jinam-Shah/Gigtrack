@@ -67,18 +67,21 @@ export default function GigForm({ onSuccess, existingGig }) {
     }
   }
 
+  const isFlat = formData.rateType === "flat";
+
   return (
-    <div className="gigform-wrapper">
-      <h4 className="gigform-title">
+    <div className="gigform-wrapper" role="region" aria-label={existingGig ? "Edit gig form" : "Log new gig form"}>
+      <h2 className="gigform-title">
         {existingGig ? "Edit Gig" : "Log a New Gig"}
-      </h4>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
+      </h2>
+      {error && <Alert variant="danger" role="alert">{error}</Alert>}
+      <Form onSubmit={handleSubmit} noValidate>
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Title</Form.Label>
+              <Form.Label htmlFor="gig-title">Title</Form.Label>
               <Form.Control
+                id="gig-title"
                 type="text"
                 name="title"
                 value={formData.title}
@@ -90,8 +93,9 @@ export default function GigForm({ onSuccess, existingGig }) {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Client Name</Form.Label>
+              <Form.Label htmlFor="gig-client">Client Name</Form.Label>
               <Form.Control
+                id="gig-client"
                 type="text"
                 name="clientName"
                 value={formData.clientName}
@@ -102,11 +106,13 @@ export default function GigForm({ onSuccess, existingGig }) {
             </Form.Group>
           </Col>
         </Row>
+
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Gig Type</Form.Label>
+              <Form.Label htmlFor="gig-type">Gig Type</Form.Label>
               <Form.Select
+                id="gig-type"
                 name="gigType"
                 value={formData.gigType}
                 onChange={handleChange}
@@ -121,8 +127,9 @@ export default function GigForm({ onSuccess, existingGig }) {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Date</Form.Label>
+              <Form.Label htmlFor="gig-date">Date</Form.Label>
               <Form.Control
+                id="gig-date"
                 type="date"
                 name="date"
                 value={formData.date}
@@ -132,24 +139,33 @@ export default function GigForm({ onSuccess, existingGig }) {
             </Form.Group>
           </Col>
         </Row>
+
         <Row>
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Rate ($)</Form.Label>
+              <Form.Label htmlFor="gig-rate">Rate ($)</Form.Label>
               <Form.Control
+                id="gig-rate"
                 type="number"
                 name="rate"
                 value={formData.rate}
                 onChange={handleChange}
                 placeholder="0.00"
+                min="0"
+                step="0.01"
+                aria-describedby="rate-hint"
                 required
               />
+              <Form.Text id="rate-hint" muted>
+                {isFlat ? "Total flat fee" : "Amount per hour"}
+              </Form.Text>
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Rate Type</Form.Label>
+              <Form.Label htmlFor="gig-rate-type">Rate Type</Form.Label>
               <Form.Select
+                id="gig-rate-type"
                 name="rateType"
                 value={formData.rateType}
                 onChange={handleChange}
@@ -161,23 +177,35 @@ export default function GigForm({ onSuccess, existingGig }) {
           </Col>
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Hours Worked</Form.Label>
+              <Form.Label htmlFor="gig-hours">Hours Worked</Form.Label>
               <Form.Control
+                id="gig-hours"
                 type="number"
                 name="hoursWorked"
                 value={formData.hoursWorked}
                 onChange={handleChange}
                 placeholder="0"
-                disabled={formData.rateType === "flat"}
+                min="0"
+                step="0.5"
+                disabled={isFlat}
+                aria-disabled={isFlat}
+                aria-describedby="hours-hint"
               />
+              {isFlat && (
+                <Form.Text id="hours-hint" muted>
+                  Not used for flat rate
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
         </Row>
+
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Client Rating (1–5)</Form.Label>
+              <Form.Label htmlFor="gig-rating">Client Rating (1–5)</Form.Label>
               <Form.Select
+                id="gig-rating"
                 name="clientRating"
                 value={formData.clientRating}
                 onChange={handleChange}
@@ -193,8 +221,9 @@ export default function GigForm({ onSuccess, existingGig }) {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Status</Form.Label>
+              <Form.Label htmlFor="gig-status">Status</Form.Label>
               <Form.Select
+                id="gig-status"
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
@@ -206,9 +235,11 @@ export default function GigForm({ onSuccess, existingGig }) {
             </Form.Group>
           </Col>
         </Row>
+
         <Form.Group className="mb-3">
-          <Form.Label>Client Note</Form.Label>
+          <Form.Label htmlFor="gig-note">Client Note</Form.Label>
           <Form.Control
+            id="gig-note"
             as="textarea"
             name="clientNote"
             value={formData.clientNote}
@@ -217,6 +248,7 @@ export default function GigForm({ onSuccess, existingGig }) {
             rows={2}
           />
         </Form.Group>
+
         <Button type="submit" variant="primary" disabled={loading}>
           {loading ? "Saving..." : existingGig ? "Update Gig" : "Log Gig"}
         </Button>

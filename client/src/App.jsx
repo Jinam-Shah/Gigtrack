@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.jsx";
+import HowToUse from "./components/HowToUse/HowToUse.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
@@ -35,33 +36,38 @@ export default function App() {
     setUser(loggedInUser);
   }
 
-  // Don't render anything until we know if user is logged in
   if (!authChecked) return null;
 
   return (
     <>
       <Navbar user={user} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        {/* Protected routes — redirect to /login if not logged in */}
-        <Route
-          path="/gigs"
-          element={user ? <GigsPage user={user} /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/dashboard"
-          element={
-            user ? <DashboardPage user={user} /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/goals"
-          element={user ? <GoalsPage user={user} /> : <Navigate to="/login" />}
-        />
-      </Routes>
+          <Route
+            path="/gigs"
+            element={user ? <GigsPage user={user} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/dashboard"
+            element={
+              user ? <DashboardPage user={user} /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/goals"
+            element={
+              user ? <GoalsPage user={user} /> : <Navigate to="/login" />
+            }
+          />
+        </Routes>
+      </main>
+
+      {/* Floating help button — only shown when logged in */}
+      {user && <HowToUse />}
     </>
   );
 }
