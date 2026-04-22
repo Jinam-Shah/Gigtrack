@@ -75,6 +75,7 @@ export default function PayoutList({ goalId, payouts, onRefresh }) {
               variant="outline-secondary"
               size="sm"
               onClick={() => handleEdit(payout)}
+              aria-label={`Edit payout from ${payout.source}`}
             >
               Edit
             </Button>
@@ -82,6 +83,7 @@ export default function PayoutList({ goalId, payouts, onRefresh }) {
               variant="outline-danger"
               size="sm"
               onClick={() => handleDelete(payout._id)}
+              aria-label={`Delete payout from ${payout.source}`}
             >
               Delete
             </Button>

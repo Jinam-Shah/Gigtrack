@@ -47,36 +47,42 @@ export default function RegisterForm({ onSuccess }) {
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
+              <Form.Label htmlFor="register-name">Name</Form.Label>
               <Form.Control
+                id="register-name"
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your full name"
                 required
+                autoComplete="name"
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label htmlFor="register-email">Email</Form.Label>
               <Form.Control
+                id="register-email"
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@email.com"
                 required
+                autoComplete="email"
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label htmlFor="register-password">Password</Form.Label>
               <Form.Control
+                id="register-password"
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Choose a password"
                 required
+                autoComplete="new-password"
               />
             </Form.Group>
             <Button

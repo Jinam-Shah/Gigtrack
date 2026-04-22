@@ -67,8 +67,9 @@ export default function GoalForm({ onSuccess, existingGoal }) {
       {error && <Alert variant="danger">{error}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Label</Form.Label>
+          <Form.Label htmlFor="goal-label">Label</Form.Label>
           <Form.Control
+            id="goal-label"
             type="text"
             name="label"
             value={formData.label}
@@ -78,8 +79,9 @@ export default function GoalForm({ onSuccess, existingGoal }) {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Target Amount ($)</Form.Label>
+          <Form.Label htmlFor="goal-amount">Target Amount ($)</Form.Label>
           <Form.Control
+            id="goal-amount"
             type="number"
             name="targetAmount"
             value={formData.targetAmount}
@@ -89,8 +91,9 @@ export default function GoalForm({ onSuccess, existingGoal }) {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Month</Form.Label>
+          <Form.Label htmlFor="goal-month">Month</Form.Label>
           <Form.Control
+            id="goal-month"
             type="month"
             name="month"
             value={formData.month}

@@ -50,6 +50,7 @@ export default function GigCard({ gig, onEdit, onDelete }) {
             variant="outline-primary"
             size="sm"
             onClick={() => onEdit(gig)}
+            aria-label={`Edit gig: ${gig.title}`}
           >
             Edit
           </Button>
@@ -57,6 +58,7 @@ export default function GigCard({ gig, onEdit, onDelete }) {
             variant="outline-danger"
             size="sm"
             onClick={() => onDelete(gig._id)}
+            aria-label={`Delete gig: ${gig.title}`}
           >
             Delete
           </Button>

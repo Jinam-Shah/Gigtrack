@@ -22,10 +22,19 @@ export default function Navbar({ user, onLogout }) {
         <BSNavbar.Brand
           onClick={() => navigate("/")}
           className="gigtrack-brand"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              navigate("/");
+            }
+          }}
+          aria-label="GigTrack Home"
         >
           💼 GigTrack
         </BSNavbar.Brand>
-        <BSNavbar.Toggle aria-controls="main-nav" />
+        <BSNavbar.Toggle aria-controls="main-nav" aria-label="Toggle navigation" />
         <BSNavbar.Collapse id="main-nav">
           <Nav className="me-auto">
             {user && (

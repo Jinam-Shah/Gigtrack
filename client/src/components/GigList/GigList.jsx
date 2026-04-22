@@ -16,6 +16,7 @@ export default function GigList({ userId }) {
     client: "",
     startDate: "",
     endDate: "",
+    minRating: "",
   });
 
   async function fetchGigs() {
@@ -26,6 +27,7 @@ export default function GigList({ userId }) {
       if (filters.client) params.append("client", filters.client);
       if (filters.startDate) params.append("startDate", filters.startDate);
       if (filters.endDate) params.append("endDate", filters.endDate);
+      if (filters.minRating) params.append("minRating", filters.minRating);
 
       const res = await fetch(`/api/gigs?${params.toString()}`, {
         credentials: "include",
@@ -42,6 +44,10 @@ export default function GigList({ userId }) {
       setLoading(false);
     }
   }
+
+  // Compute totals for filtered gigs
+  const filteredTotal = gigs.reduce((sum, gig) => sum + gig.earnings, 0);
+  const filteredCount = gigs.length;
 
   useEffect(() => {
     fetchGigs();
@@ -94,49 +100,83 @@ export default function GigList({ userId }) {
         <GigForm onSuccess={handleFormSuccess} existingGig={editingGig} />
       )}
 
-      <div className="giglist-filters">
+      <div className="giglist-filters" role="search" aria-label="Filter gigs">
         <Row>
           <Col md={3}>
-            <Form.Select
-              name="type"
-              value={filters.type}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Types</option>
-              <option value="tutoring">Tutoring</option>
-              <option value="delivery">Delivery</option>
-              <option value="design">Design</option>
-              <option value="retail">Retail</option>
-              <option value="other">Other</option>
-            </Form.Select>
+            <Form.Group>
+              <Form.Label visuallyHidden>Gig Type</Form.Label>
+              <Form.Select
+                name="type"
+                value={filters.type}
+                onChange={handleFilterChange}
+                aria-label="Filter by gig type"
+              >
+                <option value="">All Types</option>
+                <option value="tutoring">Tutoring</option>
+                <option value="delivery">Delivery</option>
+                <option value="design">Design</option>
+                <option value="retail">Retail</option>
+                <option value="other">Other</option>
+              </Form.Select>
+            </Form.Group>
           </Col>
           <Col md={3}>
-            <Form.Control
-              type="text"
-              name="client"
-              placeholder="Filter by client"
-              value={filters.client}
-              onChange={handleFilterChange}
-            />
+            <Form.Group>
+              <Form.Label visuallyHidden>Client Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="client"
+                placeholder="Filter by client"
+                value={filters.client}
+                onChange={handleFilterChange}
+                aria-label="Filter by client name"
+              />
+            </Form.Group>
           </Col>
           <Col md={2}>
-            <Form.Control
-              type="date"
-              name="startDate"
-              value={filters.startDate}
-              onChange={handleFilterChange}
-            />
+            <Form.Group>
+              <Form.Label visuallyHidden>Start Date</Form.Label>
+              <Form.Control
+                type="date"
+                name="startDate"
+                value={filters.startDate}
+                onChange={handleFilterChange}
+                aria-label="Filter from date"
+              />
+            </Form.Group>
           </Col>
           <Col md={2}>
-            <Form.Control
-              type="date"
-              name="endDate"
-              value={filters.endDate}
-              onChange={handleFilterChange}
-            />
+            <Form.Group>
+              <Form.Label visuallyHidden>End Date</Form.Label>
+              <Form.Control
+                type="date"
+                name="endDate"
+                value={filters.endDate}
+                onChange={handleFilterChange}
+                aria-label="Filter to date"
+              />
+            </Form.Group>
           </Col>
           <Col md={2}>
-            <Button variant="outline-secondary" onClick={fetchGigs}>
+            <Form.Group>
+              <Form.Label visuallyHidden>Minimum Rating</Form.Label>
+              <Form.Select
+                name="minRating"
+                value={filters.minRating}
+                onChange={handleFilterChange}
+                aria-label="Filter by minimum rating"
+              >
+                <option value="">All Ratings</option>
+                <option value="1">1+ Stars</option>
+                <option value="2">2+ Stars</option>
+                <option value="3">3+ Stars</option>
+                <option value="4">4+ Stars</option>
+                <option value="5">5 Stars</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={2}>
+            <Button variant="outline-secondary" onClick={fetchGigs} aria-label="Apply filters">
               Apply Filters
             </Button>
           </Col>
@@ -148,14 +188,27 @@ export default function GigList({ userId }) {
       {!loading && gigs.length === 0 && (
         <p className="giglist-empty">No gigs found. Log your first gig!</p>
       )}
-      {gigs.map((gig) => (
-        <GigCard
-          key={gig._id}
-          gig={gig}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      ))}
+
+      {/* Filtered totals summary */}
+      {!loading && gigs.length > 0 && (
+        <div className="giglist-summary">
+          <span className="giglist-count">{filteredCount} gig(s)</span>
+          <span className="giglist-total">
+            Total: ${filteredTotal.toFixed(2)}
+          </span>
+        </div>
+      )}
+
+      <div className="giglist-grid">
+        {gigs.map((gig) => (
+          <GigCard
+            key={gig._id}
+            gig={gig}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </Container>
   );
 }

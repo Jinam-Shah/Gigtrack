@@ -14,7 +14,7 @@ function requireAuth(req, res, next) {
 router.get("/", requireAuth, async (req, res) => {
   try {
     const db = getDB();
-    const { type, client, startDate, endDate } = req.query;
+    const { type, client, startDate, endDate, minRating } = req.query;
 
     const filter = { userId: new ObjectId(req.user._id) };
 
@@ -24,6 +24,9 @@ router.get("/", requireAuth, async (req, res) => {
       filter.date = {};
       if (startDate) filter.date.$gte = new Date(startDate);
       if (endDate) filter.date.$lte = new Date(endDate);
+    }
+    if (minRating) {
+      filter.clientRating = { $gte: parseInt(minRating) };
     }
 
     const gigs = await db

@@ -69,6 +69,9 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
             variant="outline-secondary"
             size="sm"
             onClick={() => setShowPayouts(!showPayouts)}
+            aria-expanded={showPayouts}
+            aria-controls="payouts-section"
+            aria-label={showPayouts ? "Hide payouts" : "Show payouts"}
           >
             {showPayouts ? "Hide Payouts" : "Show Payouts"}
           </Button>
@@ -76,6 +79,7 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
             variant="outline-primary"
             size="sm"
             onClick={() => onEdit(goal)}
+            aria-label={`Edit goal: ${goal.label}`}
           >
             Edit
           </Button>
@@ -83,10 +87,21 @@ export default function GoalCard({ goal, onEdit, onDelete, onRefresh }) {
             variant="outline-danger"
             size="sm"
             onClick={() => onDelete(goal._id)}
+            aria-label={`Delete goal: ${goal.label}`}
           >
             Delete
           </Button>
         </div>
+
+        {showPayouts && (
+          <div id="payouts-section" role="region" aria-label="Payouts for this goal">
+            <PayoutList
+              goalId={goal._id}
+              payouts={goal.payouts}
+              onRefresh={onRefresh}
+            />
+          </div>
+        )}
 
         {showPayouts && (
           <PayoutList

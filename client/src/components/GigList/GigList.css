@@ -22,3 +22,35 @@
   margin-top: 3rem;
   font-size: 1.1rem;
 }
+
+.giglist-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.giglist-count {
+  font-size: 1rem;
+}
+
+.giglist-total {
+  font-size: 1.2rem;
+}
+
+.giglist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .giglist-grid {
+    grid-template-columns: 1fr;
+  }
+}

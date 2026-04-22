@@ -71,25 +71,29 @@ export default function LoginForm({ onSuccess }) {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label htmlFor="login-email">Email</Form.Label>
               <Form.Control
+                id="login-email"
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@email.com"
                 required
+                autoComplete="email"
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label htmlFor="login-password">Password</Form.Label>
               <Form.Control
+                id="login-password"
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Your password"
                 required
+                autoComplete="current-password"
               />
             </Form.Group>
             <Button
