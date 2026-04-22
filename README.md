@@ -20,7 +20,7 @@
 - **Class:** [Web Development Online — Spring 2026](https://johnguerra.co/classes/webDevelopment_online_spring_2026/)
 - **GitHub Repo:** [https://github.com/Jinam-Shah/Gigtrack](https://github.com/Jinam-Shah/Gigtrack)
 - **Live Demo:** [https://gigtrack.onrender.com](https://gigtrack.onrender.com)
-- **Video Demo:** [https://youtu.be/uvl8GMEbcXE](https://youtu.be/uvl8GMEbcXE)
+- **Video Demo:** [https://youtu.be/uvl8GMEbcXE](https://youtu.be/RP3gNSgdfJU)
 
 ---
 
