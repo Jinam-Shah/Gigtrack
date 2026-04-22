@@ -27,16 +27,16 @@
 ## 🖼️ Screenshots
 
 ### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](screenshots/login.jpeg)
 
 ### My Gigs (Grid View)
-![My Gigs](screenshots/Mygigs.png)
+![My Gigs](screenshots/Mygigs.jpeg)
 
 ### Earnings Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard.jpeg)
 
 ### Goals & Payouts (Grid View)
-![Goals](screenshots/goals.png)
+![Goals](screenshots/goals.jpeg)
 
 ---
 
